@@ -67,38 +67,49 @@ export async function execute(
     });
   } else if (sub === "clear") {
     const target = interaction.options.getUser("user", true);
-    const { rowCount } = await db
+    const result = await db
       .delete(warnings)
       .where(
         and(
           eq(warnings.guildId, interaction.guild.id),
           eq(warnings.userId, target.id),
         ),
-      );
+      )
+      .returning();
 
     await interaction.editReply({
       embeds: [
         successEmbed(
           "Warnings Cleared",
-          `Cleared **${rowCount ?? 0}** warning(s) for ${target.tag}.`,
+          `Cleared **${result.length}** warning(s) for ${target.username}.`,
         ),
       ],
     });
   } else if (sub === "remove") {
     const id = interaction.options.getInteger("id", true);
-    const { rowCount } = await db
+    // FIX: also check guildId so mods can only remove warnings from their own server
+    const result = await db
       .delete(warnings)
-      .where(eq(warnings.id, id));
+      .where(
+        and(
+          eq(warnings.id, id),
+          eq(warnings.guildId, interaction.guild.id),
+        ),
+      )
+      .returning();
 
-    if (!rowCount) {
+    if (result.length === 0) {
       await interaction.editReply({
-        embeds: [errorEmbed("Not Found", `No warning with ID **${id}** found.`)],
+        embeds: [
+          errorEmbed(
+            "Not Found",
+            `No warning with ID **${id}** found in this server.`,
+          ),
+        ],
       });
     } else {
       await interaction.editReply({
-        embeds: [
-          successEmbed("Warning Removed", `Removed warning #${id}.`),
-        ],
+        embeds: [successEmbed("Warning Removed", `Removed warning #${id}.`)],
       });
     }
   }
