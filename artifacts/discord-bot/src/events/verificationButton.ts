@@ -5,7 +5,6 @@ import {
 } from "discord.js";
 import { db } from "../lib/db.js";
 import { verificationRequests } from "../lib/schema.js";
-import { eq, and } from "drizzle-orm";
 import { getConfig } from "../lib/config.js";
 import { Colors } from "../lib/colors.js";
 import { successEmbed, errorEmbed } from "../lib/embeds.js";
@@ -36,7 +35,6 @@ export async function handleVerifyButton(
     .catch(() => null);
   if (!member) return;
 
-  // Already verified
   if (member.roles.cache.has(config.verificationRoleId)) {
     await interaction.reply({
       embeds: [
@@ -73,11 +71,8 @@ export async function handleVerifyButton(
       ephemeral: true,
     });
 
-    logger.info(
-      `Verified ${interaction.user.tag} in guild ${interaction.guild.id}`,
-    );
+    logger.info(`Verified ${interaction.user.tag} in guild ${interaction.guild.id}`);
 
-    // Log it
     if (config.logChannelId) {
       const logChannel = await interaction.guild.channels
         .fetch(config.logChannelId)
