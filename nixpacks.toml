@@ -3,11 +3,11 @@ nixPkgs = ["nodejs_22"]
 
 [phases.install]
 cmds = [
-  "corepack enable pnpm && pnpm install --filter @workspace/discord-bot"
+  "npx pnpm@10 install --filter @workspace/discord-bot"
 ]
 
 [phases.build]
 cmds = []
 
 [start]
-cmd = "pnpm --filter @workspace/discord-bot run start:prod"
+cmd = "npx pnpm@10 --filter @workspace/discord-bot run start:prod"
