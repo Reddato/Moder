@@ -8,7 +8,7 @@ import {
 import { db } from "../lib/db.js";
 import { modLogs } from "../lib/schema.js";
 import { Colors } from "../lib/colors.js";
-import { successEmbed, errorEmbed } from "../lib/embeds.js";
+import { errorEmbed } from "../lib/embeds.js";
 import { getConfig } from "../lib/config.js";
 
 export const data = new SlashCommandBuilder()
@@ -63,7 +63,11 @@ export async function execute(
       .setColor(Colors.unban)
       .setTitle("✅ User Unbanned")
       .addFields(
-        { name: "👤 User", value: `<@${userId}> \`${userId}\``, inline: true },
+        {
+          name: "👤 User",
+          value: `<@${userId}> \`${userId}\``,
+          inline: true,
+        },
         {
           name: "🛡️ Moderator",
           value: `${interaction.user.tag}`,
@@ -86,7 +90,9 @@ export async function execute(
     }
   } catch (err) {
     await interaction.editReply({
-      embeds: [errorEmbed("Unban Failed", String(err))],
+      embeds: [
+        errorEmbed("Unban Failed", `Could not unban the user: ${String(err)}`),
+      ],
     });
   }
 }
