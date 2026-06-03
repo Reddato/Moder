@@ -19,7 +19,10 @@ export const data = new SlashCommandBuilder()
     o.setName("user").setDescription("The user to warn").setRequired(true),
   )
   .addStringOption((o) =>
-    o.setName("reason").setDescription("Reason for the warning").setRequired(true),
+    o
+      .setName("reason")
+      .setDescription("Reason for the warning")
+      .setRequired(true),
   );
 
 export async function execute(
@@ -101,7 +104,9 @@ export async function execute(
   // Auto-action on max warnings
   if (count >= maxWarnings) {
     try {
-      const member = await interaction.guild.members.fetch(target.id).catch(() => null);
+      const member = await interaction.guild.members
+        .fetch(target.id)
+        .catch(() => null);
       if (member) {
         await member.timeout(
           3600000,
