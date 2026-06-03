@@ -1,4 +1,9 @@
-import { type Client, type Message, type PartialMessage, EmbedBuilder } from "discord.js";
+import {
+  type Client,
+  type Message,
+  type PartialMessage,
+  EmbedBuilder,
+} from "discord.js";
 import { getConfig } from "../lib/config.js";
 import { Colors } from "../lib/colors.js";
 import { logger } from "../lib/logger.js";
@@ -20,7 +25,11 @@ export async function execute(
     .fetch(config.logChannelId)
     .catch(() => null);
   if (!channel?.isTextBased()) return;
-  if (channel.id === config.logChannelId && message.channelId === config.logChannelId) return;
+  if (
+    channel.id === config.logChannelId &&
+    message.channelId === config.logChannelId
+  )
+    return;
 
   const embed = new EmbedBuilder()
     .setColor(Colors.error)
@@ -51,7 +60,10 @@ export async function execute(
   if (message.attachments.size > 0) {
     embed.addFields({
       name: "📎 Attachments",
-      value: message.attachments.map((a) => a.url).join("\n").slice(0, 1024),
+      value: message.attachments
+        .map((a) => a.url)
+        .join("\n")
+        .slice(0, 1024),
     });
   }
 
