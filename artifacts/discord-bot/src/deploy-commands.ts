@@ -1,4 +1,4 @@
-import { REST, Routes, OAuth2Scopes, PermissionFlagsBits } from "discord.js";
+import { REST, Routes, PermissionFlagsBits } from "discord.js";
 import { logger } from "./lib/logger.js";
 
 import * as ban from "./commands/ban.js";
@@ -67,7 +67,6 @@ async function main() {
       logger.warn("⚠️  Missing Access — bot needs to be re-invited with the 'applications.commands' scope.");
       logger.warn(`👉 Re-invite URL: ${inviteUrl}`);
       logger.warn("After re-inviting, restart the bot.");
-      // Don't crash — let the bot still start (commands may already exist from a prior deploy)
       return;
     }
     throw err;
