@@ -7,11 +7,7 @@ import {
 import { db } from "../lib/db.js";
 import { modLogs } from "../lib/schema.js";
 import { Colors } from "../lib/colors.js";
-import {
-  modActionEmbed,
-  successEmbed,
-  errorEmbed,
-} from "../lib/embeds.js";
+import { modActionEmbed, errorEmbed } from "../lib/embeds.js";
 import { canModerate } from "../lib/permissions.js";
 import { getConfig } from "../lib/config.js";
 
