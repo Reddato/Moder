@@ -64,7 +64,6 @@ export async function execute(message: Message, _client: Client) {
   const now = Date.now();
   const key = `${message.guild.id}:${message.author.id}`;
 
-  // ── Spam detection ─────────────────────────────────────────────────────────
   const timestamps = (userMessageMap.get(key) ?? []).filter(
     (t) => now - t < SPAM_WINDOW_MS,
   );
@@ -79,7 +78,6 @@ export async function execute(message: Message, _client: Client) {
     return;
   }
 
-  // ── Invite / mass-mention filter ───────────────────────────────────────────
   for (const pattern of BANNED_PATTERNS) {
     if (pattern.test(message.content)) {
       await message.delete().catch(() => null);
@@ -89,7 +87,6 @@ export async function execute(message: Message, _client: Client) {
     }
   }
 
-  // ── Excessive caps ─────────────────────────────────────────────────────────
   const letters = message.content.replace(/[^a-zA-Z]/g, "");
   if (letters.length >= MIN_CAPS_LENGTH) {
     const ratio = (message.content.match(/[A-Z]/g)?.length ?? 0) / letters.length;
