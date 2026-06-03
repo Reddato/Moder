@@ -1,0 +1,16 @@
+export const Colors = {
+  primary: 0x5865f2,
+  success: 0x57f287,
+  warning: 0xfee75c,
+  error: 0xed4245,
+  info: 0x5865f2,
+  moderation: 0xff7043,
+  verification: 0x00b0ff,
+  logging: 0x7c83fd,
+  mute: 0x9e9e9e,
+  ban: 0xd32f2f,
+  kick: 0xff5722,
+  warn: 0xffc107,
+  unban: 0x66bb6a,
+  unmute: 0x81c784,
+} as const;
