@@ -105,7 +105,6 @@ export async function execute(
       verificationRoleId: role.id,
     });
 
-    // Send verification embed to that channel
     const verChannel = await interaction.guild.channels
       .fetch(channel.id)
       .catch(() => null);
@@ -162,9 +161,7 @@ export async function execute(
       .addFields(
         {
           name: "📋 Log Channel",
-          value: config?.logChannelId
-            ? `<#${config.logChannelId}>`
-            : "Not set",
+          value: config?.logChannelId ? `<#${config.logChannelId}>` : "Not set",
           inline: true,
         },
         {
