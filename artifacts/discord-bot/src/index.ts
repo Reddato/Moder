@@ -63,10 +63,8 @@ const client = new Client({
   ],
 });
 
-// Ready
 client.once("clientReady", () => readyEvent.execute(client));
 
-// Interactions (commands + buttons)
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (interaction.isChatInputCommand()) {
     const command = commands.get(interaction.commandName);
@@ -97,7 +95,6 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   }
 });
 
-// Member events
 client.on(guildMemberAddEvent.name, (member: GuildMember) =>
   guildMemberAddEvent.execute(member, client),
 );
@@ -108,7 +105,6 @@ client.on(
     guildMemberRemoveEvent.execute(member, client),
 );
 
-// Message events
 client.on(
   messageDeleteEvent.name,
   (message: Message | PartialMessage) =>
@@ -125,7 +121,6 @@ client.on(autoModEvent.name, (message: Message) =>
   autoModEvent.execute(message, client),
 );
 
-// Graceful shutdown
 process.on("SIGTERM", async () => {
   logger.info("Received SIGTERM, shutting down...");
   client.destroy();
