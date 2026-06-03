@@ -24,8 +24,7 @@ export async function execute(
 
   await interaction.deferReply({ ephemeral: false });
 
-  const target =
-    interaction.options.getUser("user") ?? interaction.user;
+  const target = interaction.options.getUser("user") ?? interaction.user;
 
   const member = await interaction.guild.members.fetch(target.id).catch(() => null);
 
