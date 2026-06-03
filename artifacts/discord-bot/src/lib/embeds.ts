@@ -24,8 +24,6 @@ function warnBar(count: number, max: number): string {
   return `\`${bar}\` ${count}/${max}`;
 }
 
-// ─── Moderation Action ───────────────────────────────────────────────────────
-
 export function modActionEmbed({
   action,
   icon,
@@ -45,8 +43,8 @@ export function modActionEmbed({
   color: number;
   extras?: { name: string; value: string; inline?: boolean }[];
 }): EmbedBuilder {
-  const targetUser = "user" in target ? target.user : target as User;
-  const modUser = "user" in moderator ? moderator.user : moderator as User;
+  const targetUser = "user" in target ? target.user : (target as User);
+  const modUser = "user" in moderator ? moderator.user : (moderator as User);
   const id = caseId();
   const unixNow = Math.floor(Date.now() / 1000);
 
@@ -61,7 +59,9 @@ export function modActionEmbed({
     .setDescription(
       [
         `> **Target** — ${targetUser.toString()} \`${targetUser.id}\``,
-        reason ? `> **Reason** — ${reason}` : `> **Reason** — *No reason provided*`,
+        reason
+          ? `> **Reason** — ${reason}`
+          : `> **Reason** — *No reason provided*`,
         duration ? `> **Duration** — ${formatDuration(duration)}` : null,
       ]
         .filter(Boolean)
@@ -78,8 +78,6 @@ export function modActionEmbed({
     .setFooter({ text: `Case ${id}  •  User ID: ${targetUser.id}` })
     .setTimestamp();
 }
-
-// ─── Success / Error / Info ──────────────────────────────────────────────────
 
 export function successEmbed(title: string, description: string): EmbedBuilder {
   return new EmbedBuilder()
@@ -107,11 +105,14 @@ export function infoEmbed(title: string, description: string): EmbedBuilder {
     .setTimestamp();
 }
 
-// ─── Warning List ────────────────────────────────────────────────────────────
-
 export function warningListEmbed(
   target: User,
-  warnings: { id: number; reason: string; moderatorId: string; createdAt: Date }[],
+  warnings: {
+    id: number;
+    reason: string;
+    moderatorId: string;
+    createdAt: Date;
+  }[],
   max: number = 3,
 ): EmbedBuilder {
   const embed = new EmbedBuilder()
@@ -126,13 +127,13 @@ export function warningListEmbed(
     .setTimestamp();
 
   if (warnings.length === 0) {
-    embed.setDescription("✅  This user has a clean record — no warnings found.");
+    embed.setDescription(
+      "✅  This user has a clean record — no warnings found.",
+    );
     return embed;
   }
 
-  embed.setDescription(
-    `**Severity**  ${warnBar(warnings.length, max)}\n\u200b`,
-  );
+  embed.setDescription(`**Severity**  ${warnBar(warnings.length, max)}\n\u200b`);
 
   for (const w of warnings.slice(0, 25)) {
     const ts = Math.floor(w.createdAt.getTime() / 1000);
@@ -149,8 +150,6 @@ export function warningListEmbed(
 
   return embed;
 }
-
-// ─── Verification Panel ──────────────────────────────────────────────────────
 
 export function verificationEmbed(guildName: string): EmbedBuilder {
   return new EmbedBuilder()
@@ -173,8 +172,6 @@ export function verificationEmbed(guildName: string): EmbedBuilder {
     .setFooter({ text: "Click the button below to verify" })
     .setTimestamp();
 }
-
-// ─── Log Embed ───────────────────────────────────────────────────────────────
 
 export function logEmbed({
   event,
@@ -201,20 +198,15 @@ export function logEmbed({
   return embed;
 }
 
-// ─── Auto-Mod Notice (sent in channel, auto-deletes) ────────────────────────
-
-export function autoModNotice(
-  userId: string,
-  reason: string,
-): EmbedBuilder {
+export function autoModNotice(userId: string, reason: string): EmbedBuilder {
   return new EmbedBuilder()
     .setColor(Colors.error)
     .setTitle("🛡️  Auto-Mod")
-    .setDescription(`<@${userId}> — **${reason}**\n*This message will be removed shortly.*`)
+    .setDescription(
+      `<@${userId}> — **${reason}**\n*This message will be removed shortly.*`,
+    )
     .setTimestamp();
 }
-
-// ─── Auto-Mod Log (sent to log channel) ─────────────────────────────────────
 
 export function autoModLogEmbed({
   userId,
@@ -234,7 +226,11 @@ export function autoModLogEmbed({
     .setAuthor({ name: "Auto-Mod Triggered" })
     .setTitle("🤖  Automatic Action")
     .addFields(
-      { name: "👤 User", value: `${userTag} (<@${userId}>)\n\`${userId}\``, inline: true },
+      {
+        name: "👤 User",
+        value: `${userTag} (<@${userId}>)\n\`${userId}\``,
+        inline: true,
+      },
       { name: "📍 Channel", value: `<#${channelId}>`, inline: true },
       { name: "🚫 Trigger", value: reason, inline: true },
       { name: "💬 Content", value: `\`\`\`${content.slice(0, 500)}\`\`\`` },
