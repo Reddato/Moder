@@ -1,4 +1,9 @@
-import { type Client, type GuildMember, type PartialGuildMember, EmbedBuilder } from "discord.js";
+import {
+  type Client,
+  type GuildMember,
+  type PartialGuildMember,
+  EmbedBuilder,
+} from "discord.js";
 import { getConfig } from "../lib/config.js";
 import { Colors } from "../lib/colors.js";
 import { logger } from "../lib/logger.js";
