@@ -2,6 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "pnpm --filter @workspace/discord-bot run start:prod"
+startCommand = "npx pnpm@10 --filter @workspace/discord-bot run start:prod"
 restartPolicyType = "always"
 restartPolicyMaxRetries = 10
