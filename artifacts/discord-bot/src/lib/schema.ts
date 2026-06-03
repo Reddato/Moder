@@ -5,7 +5,6 @@ import {
   integer,
   timestamp,
   boolean,
-  bigint,
 } from "drizzle-orm/pg-core";
 
 export const warnings = pgTable("bot_warnings", {
